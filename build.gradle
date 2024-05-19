@@ -1,0 +1,37 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+
+
+group 'de.yggdrasil.core.extension'
+version = System.getenv('RELEASE_VERSION') ?: '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    //https://mvnrepository.com/artifact/net.minestom/minestom-snapshots
+    implementation 'net.minestom:minestom-snapshots:2947279898'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId 'server-extension'
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Yggdrasil-Worlds/Server-Extension")
+            credentials {
+                username = System.getenv("USERNAME")
+                password = System.getenv("TOKEN")
+            }
+        }
+    }
+}
